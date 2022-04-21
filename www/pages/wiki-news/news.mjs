@@ -146,9 +146,9 @@ class Element extends HTMLElement {
   tableClicked(e){
     let id = e.target.closest("tr").getAttribute("data-id")
     if(e.target.classList.contains("publish")){
-      api.del(`wiki/${id}/tags/draft`).then(this.refreshData)
+      api.post(`news/${id}/publish`).then(this.refreshData)
     } else if(e.target.classList.contains("unpublish")){
-      api.post(`wiki/${id}/tags/draft`).then(this.refreshData)
+      api.post(`news/${id}/unpublish`).then(this.refreshData)
     }
   }
 
