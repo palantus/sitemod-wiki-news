@@ -84,6 +84,7 @@ class Element extends HTMLElement {
       if(!e.originalTarget.value) return this.shadowRoot.getElementById("new-id").value = '';
       clearTimeout(this.slugGenTimer)
       this.slugGenTimer = setTimeout(() => {
+        if(!e.originalTarget.value) return;
         api.post("wiki/generate-id", {id: e.originalTarget.value, ensureNew: true}).then(id => this.shadowRoot.getElementById("new-id").value = id)
       }, 400)
     })
