@@ -4,7 +4,7 @@ const { Router, Request, Response } = express;
 const route = Router();
 import { validateAccess } from "../../../../services/auth.mjs"
 import Page from "../../../wiki/models/page.mjs"
-import { sendMails } from "../../services/news-service.mjs";
+import { sendMails, sendNotifications } from "../../services/news-service.mjs";
 
 export default (app) => {
 
@@ -21,6 +21,7 @@ export default (app) => {
     if(article && !article.validateAccess(res, 'w')) return;
     article.removeTag("user-draft")
     sendMails(article, res.locals.user)
+    sendNotifications(article)
     res.json({success: true})
   })
 

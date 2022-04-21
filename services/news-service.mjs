@@ -3,6 +3,7 @@ import LogEntry from "../../../models/logentry.mjs"
 import Share from "../../../models/share.mjs";
 import MailSender from "../../mail/services/mailsender.mjs"
 import { query } from "entitystorage";
+import User from "../../../models/user.mjs";
 
 export async function sendMails(article, curUser){
   if(article.tags.includes("user-emails-sent")) return;
@@ -30,5 +31,11 @@ export async function sendMails(article, curUser){
     }
   }
 
-  //article.tag("user-emails-sent")
+  article.tag("user-emails-sent")
+}
+
+export async function sendNotifications(article){
+  for(let user of query.type(User).tag("user").all){
+    user.notify("wiki", article.title, {title: "News article published", refs: [{uiPath: `/wiki/${article.id}`, title: "Go to article"}]})
+  }
 }
