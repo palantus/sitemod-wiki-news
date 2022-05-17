@@ -148,8 +148,10 @@ class Element extends HTMLElement {
   tableClicked(e){
     let id = e.target.closest("tr").getAttribute("data-id")
     if(e.target.classList.contains("publish")){
+      e.target.setAttribute("disabled", "true") // Prevent double-clicks
       api.post(`news/${id}/publish`).then(this.refreshData)
     } else if(e.target.classList.contains("unpublish")){
+      e.target.setAttribute("disabled", "true") // Prevent double-clicks
       api.post(`news/${id}/unpublish`).then(this.refreshData)
     }
   }
