@@ -22,6 +22,9 @@ export async function sendMails(article, curUser){
             <div>
               <a href="${global.sitecore.siteURL}/wiki/${article.id}?shareKey=${shareKey}">Go to news article</a>
             </div>
+            <br>
+            <hr>
+            <p style="font-size: 10pt;">If you do not want to receive these types of emails, you can unsubscribe <a href="${global.sitecore.siteURL}/profile">here</a></p>
           </div>
         `,
         bodyType: "html"
