@@ -1,7 +1,7 @@
 import CoreSetup from "../../../models/setup.mjs"
 import LogEntry from "../../../models/logentry.mjs"
 import Share from "../../../models/share.mjs";
-import MailSender from "../../mail/services/mailsender.mjs"
+import Mail from "../../mail/models/mail.mjs"
 import { query } from "entitystorage";
 import User from "../../../models/user.mjs";
 
@@ -12,26 +12,22 @@ export async function sendMails(article, curUser){
   for(let user of query.tag("user").relatedTo(query.prop("emailOnNews", true)).all){
     if(!shareKey) shareKey = new Share("email", 'r', curUser).attach(article).key;
     if(!user.email) continue;
-    try{
-      await new MailSender().send({
-        to: user.email, 
-        subject: `${CoreSetup.lookup().siteTitle}: News article published`, 
-        body: `
+    await new Mail({
+      to: user.email, 
+      subject: `${CoreSetup.lookup().siteTitle}: News article published`, 
+      body: `
+        <div>
+          <h3>Title: ${article.title}</h3>
           <div>
-            <h3>Title: ${article.title}</h3>
-            <div>
-              <a href="${global.sitecore.siteURL}/wiki/${article.id}?shareKey=${shareKey}">Go to news article</a>
-            </div>
-            <br>
-            <hr>
-            <p style="font-size: 10pt;">If you do not want to receive these types of emails, you can unsubscribe <a href="${global.sitecore.siteURL}/profile">here</a></p>
+            <a href="${global.sitecore.siteURL}/wiki/${article.id}?shareKey=${shareKey}">Go to news article</a>
           </div>
-        `,
-        bodyType: "html"
-      })
-    } catch(err){
-      new LogEntry(`Could not send email to ${user.email}. Error: ${err}`, "mail")
-    }
+          <br>
+          <hr>
+          <p style="font-size: 10pt;">If you do not want to receive these types of emails, you can unsubscribe <a href="${global.sitecore.siteURL}/profile">here</a></p>
+        </div>
+      `,
+      bodyType: "html"
+    }).send()
   }
 
   article.tag("user-emails-sent")
