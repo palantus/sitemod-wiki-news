@@ -35,6 +35,6 @@ export async function sendMails(article, curUser){
 
 export async function sendNotifications(article){
   for(let user of query.type(User).tag("user").all){
-    user.notify("wiki", article.title, {title: "News article published", refs: [{uiPath: `/wiki/${article.id}`, title: "Go to article"}]})
+    article.rel(user.notify("wiki", article.title, {title: "News article published", refs: [{uiPath: `/wiki/${article.id}`, title: "Go to article"}]}), "notification")
   }
 }

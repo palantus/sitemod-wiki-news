@@ -5,6 +5,7 @@ const route = Router();
 import { validateAccess } from "../../../../services/auth.mjs"
 import Page from "../../../wiki/models/page.mjs"
 import { sendMails, sendNotifications } from "../../services/news-service.mjs";
+import Notification from "../../../../models/notification.mjs";
 
 export default (app) => {
 
@@ -31,6 +32,7 @@ export default (app) => {
     if(!article || !article.tags.includes("user-news")) throw "Unknown article"
     if(article && !article.validateAccess(res, 'w')) return;
     article.tag("user-draft")
+    article.rels.notification?.forEach(n => Notification.from(n).dismiss());
     res.json({success: true})
   })
 };
