@@ -28,6 +28,7 @@ export async function sendMails(article, curUser){
       `,
       bodyType: "html"
     }).send()
+    await new Promise(r => setTimeout(r, 300)); //Wait a bit between mails, to prevent slowing down the app
   }
 
   article.tag("user-emails-sent")
