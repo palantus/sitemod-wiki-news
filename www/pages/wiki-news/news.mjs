@@ -43,6 +43,8 @@ template.innerHTML = `
 
   <div id="container">
     <h1>News</h1>
+
+    <p>The following is a list of news articles. If you want an e-mail every time a new article is published, you can enable it in your <field-ref ref="/profile">profile</field-ref>.
     <table id="newstab">
       <thead>
         <tr>
