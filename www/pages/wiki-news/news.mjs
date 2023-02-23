@@ -91,7 +91,7 @@ class Element extends HTMLElement {
     })
   }
   async refreshData(){
-    this.news = await api.get("wiki/search?filter=tag:news")
+    this.news = await api.get("wiki/search?filter=tag:news permission:news.create")
     let permissions = await userPermissions()
     let isEditor = permissions.includes("news.create") && permissions.includes("wiki.edit")
 
