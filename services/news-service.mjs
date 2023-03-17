@@ -1,12 +1,17 @@
 import CoreSetup from "../../../models/setup.mjs"
-import LogEntry from "../../../models/logentry.mjs"
 import Share from "../../../models/share.mjs";
-import Mail from "../../mail/models/mail.mjs"
 import { query } from "entitystorage";
 import User from "../../../models/user.mjs";
 
 export async function sendMails(article, curUser){
   if(article.tags.includes("user-emails-sent")) return;
+
+  let Mail = null;
+  try{
+    Mail = (await import("../../mail/models/mail.mjs")).default
+  } catch(err){
+    return;
+  }
 
   let shareKey = null;
   for(let user of query.tag("user").relatedTo(query.prop("emailOnNews", true)).all){
