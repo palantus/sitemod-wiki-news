@@ -22,6 +22,8 @@ export default (app) => {
       setup.additionalTags = req.body.additionalTags.split(",").map(t => t.trim())
     if(req.body.additionalTags !== undefined && Array.isArray(req.body.additionalTags)) 
       setup.additionalTags = req.body.additionalTags
+    if(req.body.roleFilter === null || typeof req.body.roleFilter === "string") 
+      setup.roleFilter = req.body.roleFilter
 
     res.json(true);
   });

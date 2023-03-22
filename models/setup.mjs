@@ -9,9 +9,14 @@ export default class Setup extends Entity{
     return query.type(Setup).tag("wikinewssetup").first || new Setup()
   }
 
+  get roles(){
+    return (this.roleFilter||"").split(",").map(r => r.trim())
+  }
+
   toObj(){
     return {
-      additionalTags: this.additionalTags || []
+      additionalTags: this.additionalTags || [],
+      roleFilter: this.roleFilter || null
     }
   }
 }

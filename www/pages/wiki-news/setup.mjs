@@ -30,6 +30,7 @@ template.innerHTML = `
 
     <h1>News setup</h1>
     <field-list labels-pct="30">
+      <field-edit type="text" label="Role filter" id="roleFilter" title="Roles for which users in them will receive news notifications" placeholder="role1, role2 etc."></field-edit>
       <field-edit type="text" label="Additional tags" id="additionalTags" title="Tags that will be added to news articles" placeholder="tag1, tag2 etc."></field-edit>
     </field-list>
   </div>
@@ -52,6 +53,7 @@ class Element extends HTMLElement {
     let setup = await api.get("news/setup")
 
     this.shadowRoot.getElementById("additionalTags").setAttribute("value", setup.additionalTags.join(", "))
+    this.shadowRoot.getElementById("roleFilter").setAttribute("value", setup.roleFilter||"")
 
     this.shadowRoot.querySelectorAll("field-edit:not([disabled])").forEach(e => e.setAttribute("patch", `news/setup`));
   }

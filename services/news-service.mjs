@@ -2,6 +2,7 @@ import CoreSetup from "../../../models/setup.mjs"
 import Share from "../../../models/share.mjs";
 import { query } from "entitystorage";
 import User from "../../../models/user.mjs";
+import Setup from "../models/setup.mjs";
 
 export async function sendMails(article, curUser){
   if(article.tags.includes("user-emails-sent")) return;
@@ -12,11 +13,13 @@ export async function sendMails(article, curUser){
   } catch(err){
     return;
   }
+  let filterRoles = Setup.lookup().roles;
 
   let shareKey = null;
-  for(let user of query.tag("user").relatedTo(query.prop("emailOnNews", true)).all){
+  for(let user of query.type(User).tag("user").relatedTo(query.prop("emailOnNews", true)).all){
     if(!shareKey) shareKey = new Share("email", 'r', curUser).attach(article).key;
     if(!user.email) continue;
+    if(filterRoles.length > 0 && !user.roles.find(r => filterRoles.includes(r))) continue;
     await new Mail({
       to: user.email, 
       subject: `${CoreSetup.lookup().siteTitle}: News article published`, 
@@ -40,7 +43,9 @@ export async function sendMails(article, curUser){
 }
 
 export async function sendNotifications(article){
+  let filterRoles = Setup.lookup().roles;
   for(let user of query.type(User).tag("user").all){
+    if(filterRoles.length > 0 && !user.roles.find(r => filterRoles.includes(r))) continue;
     article.rel(user.notify("wiki", article.title, {title: "News article published", refs: [{uiPath: `/wiki/${article.id}`, title: "Go to article"}]}), "notification")
   }
 }
