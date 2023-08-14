@@ -98,7 +98,7 @@ class Element extends HTMLElement {
     let isEditor = permissions.includes("news.create") && permissions.includes("wiki.edit")
 
     this.shadowRoot.getElementById('news').innerHTML = this.news.filter(p => isEditor || !p.tags.includes("draft"))
-                                                                .sort((a, b) => a.modified < b.modified ? -1 : 1)
+                                                                .sort((a, b) => a.modified < b.modified ? 1 : -1)
                                                                 .map(c => `
       <tr data-id="${c.id}" class="result ${c.tags.includes("draft") ? "draft" : "live"}">
         <td>${c.modified? new Date(c.modified).toLocaleDateString():"N/A"}</td>
@@ -128,7 +128,7 @@ class Element extends HTMLElement {
       ok: async (val) => {
         let exists = await api.get(`wiki/exists?id=${val.id}`)
         if(exists) return alertDialog(`The page ${val.id} already exists`)
-        await api.patch(`wiki/${val.id}`, val)
+        await api.post(`news/articles`, val)
         goto(`/wiki/${val.id}`)
       },
       validate: (val) => 
@@ -138,8 +138,7 @@ class Element extends HTMLElement {
       values: () => {return {
         title: this.shadowRoot.getElementById("new-title").value,
         id: this.shadowRoot.getElementById("new-id").value,
-        tags: ["news", "draft", ...new Set(this.shadowRoot.getElementById("new-tags").value.split(",").map(t => t.trim()).filter(t => t))],
-        access: "shared"
+        tags: [...new Set(this.shadowRoot.getElementById("new-tags").value.split(",").map(t => t.trim()).filter(t => t))],
       }},
       close: () => {
         this.shadowRoot.querySelectorAll("field-component input").forEach(e => e.value = '')
