@@ -1,14 +1,14 @@
 const elementName = 'news-page'
 
-import api from "/system/api.mjs"
-import "/components/field-ref.mjs"
-import "/components/field.mjs"
-import {on, off} from "/system/events.mjs"
-import "/components/action-bar.mjs"
-import "/components/action-bar-item.mjs"
-import {userPermissions} from "/system/user.mjs"
-import {goto} from "/system/core.mjs"
-import {alertDialog, showDialog} from "/components/dialog.mjs"
+import api from "../../system/api.mjs"
+import "../../components/field-ref.mjs"
+import "../../components/field.mjs"
+import {on, off} from "../../system/events.mjs"
+import "../../components/action-bar.mjs"
+import "../../components/action-bar-item.mjs"
+import {userPermissions} from "../../system/user.mjs"
+import {goto} from "../../system/core.mjs"
+import {alertDialog, showDialog} from "../../components/dialog.mjs"
 
 const template = document.createElement('template');
 template.innerHTML = `

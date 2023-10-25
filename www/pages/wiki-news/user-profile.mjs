@@ -1,11 +1,11 @@
 const elementName = 'wiki-news-user-profile-component'
 
-import api from "/system/api.mjs"
-import "/components/field.mjs"
-import "/components/field-edit.mjs"
-import "/components/field-list.mjs"
-import {on, off} from "/system/events.mjs"
-import {mods} from "/system/core.mjs"
+import api from "../../system/api.mjs"
+import "../../components/field.mjs"
+import "../../components/field-edit.mjs"
+import "../../components/field-list.mjs"
+import {on, off} from "../../system/events.mjs"
+import {mods} from "../../system/core.mjs"
 
 const template = document.createElement('template');
 template.innerHTML = `
