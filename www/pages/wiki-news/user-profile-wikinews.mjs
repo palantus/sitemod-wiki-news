@@ -5,11 +5,10 @@ import "../../components/field.mjs"
 import "../../components/field-edit.mjs"
 import "../../components/field-list.mjs"
 import {on, off} from "../../system/events.mjs"
-import {mods} from "../../system/core.mjs"
+import {mods, stylesheets} from "../../system/core.mjs"
 
 const template = document.createElement('template');
 template.innerHTML = `
-  <link rel='stylesheet' href='/css/global.css'>
   <style>
     field-list{
       width: 300px;
@@ -33,7 +32,8 @@ class Element extends HTMLElement {
   constructor() {
     super();
 
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: 'open' })
+        .adoptedStyleSheets = [stylesheets.global];
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     this.refreshData = this.refreshData.bind(this)
