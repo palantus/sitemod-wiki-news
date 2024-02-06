@@ -17,6 +17,7 @@ export async function sendMails(article, curUser){
 
   let shareKey = null;
   for(let user of query.type(User).tag("user").relatedTo(query.prop("emailOnNews", true)).all){
+    if(!user.active) continue;
     if(!shareKey) shareKey = new Share("email", 'r', curUser).attach(article).key;
     if(!user.email) continue;
     if(filterRoles.length > 0 && !user.roles.find(r => filterRoles.includes(r))) continue;
@@ -47,6 +48,7 @@ export async function sendMails(article, curUser){
 export async function sendNotifications(article){
   let filterRoles = Setup.lookup().roles;
   for(let user of query.type(User).tag("user").all){
+    if(!user.active) continue;
     if(filterRoles.length > 0 && !user.roles.find(r => filterRoles.includes(r))) continue;
     if(!article.hasAccess(user)) continue;
     article.rel(user.notify("wiki", article.title, {title: "News article published", refs: [{uiPath: `/wiki/${article.id}`, title: "Go to article"}]}), "notification")
