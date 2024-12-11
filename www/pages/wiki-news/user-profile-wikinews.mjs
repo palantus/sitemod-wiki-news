@@ -38,7 +38,12 @@ class Element extends HTMLElement {
 
     this.refreshData = this.refreshData.bind(this)
 
-    this.shadowRoot.getElementById("emailOnNews").classList.toggle("hidden", !!!mods().find(m => m.id == "mail"))
+    let mailEnabled = !!mods().find(m => m.id == "mail");
+
+    this.shadowRoot.getElementById("emailOnNews").classList.toggle("hidden", !mailEnabled);
+    
+    // Hide entire container as well, since we don't have any more to setup for now
+    this.shadowRoot.getElementById("container").classList.toggle("hidden", !mailEnabled);
 
     this.refreshData();
   }
